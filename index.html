@@ -1,0 +1,544 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Арсен & Амина — Свадебное приглашение</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --burgundy: #800020;
+  --dark: #500015;
+  --ivory: #fffdf9;
+  --gold: #b99a68;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Montserrat, sans-serif;
+  background: var(--ivory);
+  color: #4b3438;
+}
+
+body.locked { overflow: hidden; }
+
+.script {
+  font-family: "Great Vibes", cursive;
+  color: var(--burgundy);
+}
+
+#cover {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  background: var(--dark);
+  padding: 20px;
+  transition: opacity 1s, visibility 1s;
+}
+
+#cover::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border: 1px solid #ffffff66;
+}
+
+.cover-content {
+  width: min(100%, 360px);
+  text-align: center;
+  color: white;
+}
+
+.cover-label {
+  letter-spacing: 4px;
+  font-size: 10px;
+  margin-bottom: 35px;
+}
+
+.envelope {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.45;
+  background: #f9f1e8;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.envelope::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #fffaf4;
+  clip-path: polygon(0 0, 100% 0, 50% 65%);
+  transform-origin: top;
+  transition: transform 1s;
+  z-index: 2;
+}
+
+.envelope::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #eadbcd;
+  clip-path: polygon(0 100%, 50% 48%, 100% 100%);
+  z-index: 3;
+}
+
+.seal {
+  position: absolute;
+  z-index: 4;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 66px;
+  height: 66px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--burgundy);
+  border: 2px solid var(--gold);
+  color: white;
+  font: 27px "Great Vibes", cursive;
+  transition: opacity .3s;
+}
+
+#cover.opening .envelope::before {
+  transform: rotateX(180deg);
+}
+
+#cover.opening .seal { opacity: 0; }
+
+#cover.dismissed {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.open-hint {
+  margin-top: 30px;
+  font-size: 10px;
+  letter-spacing: 3px;
+}
+
+#main {
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+#main.visible { opacity: 1; }
+
+section {
+  padding: 75px 20px;
+  text-align: center;
+}
+
+.hero {
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #fbf4ef;
+}
+
+.eyebrow {
+  color: var(--gold);
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+.hero .script {
+  font-size: clamp(48px, 12vw, 86px);
+  margin: 24px 0;
+}
+
+.hero-date {
+  letter-spacing: 3px;
+  font-size: 12px;
+}
+
+h2 {
+  font: 400 clamp(32px, 7vw, 46px)
+    "Cormorant Garamond", serif;
+  color: var(--burgundy);
+}
+
+.photos {
+  max-width: 680px;
+  margin: 30px auto 0;
+  display: grid;
+  gap: 18px;
+}
+
+.photos img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.photos img:nth-child(2) {
+  width: 82%;
+  margin: auto;
+}
+
+.invitation {
+  max-width: 550px;
+  margin: auto;
+  font: 24px/1.7 "Cormorant Garamond", serif;
+}
+
+.details {
+  background: var(--burgundy);
+  color: white;
+}
+
+.details h2 { color: white; }
+
+.detail-date {
+  font: clamp(32px, 8vw, 50px)
+    "Cormorant Garamond", serif;
+  margin: 25px 0;
+}
+
+.detail-label {
+  margin-top: 25px;
+  color: #e5c9a6;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.detail-value {
+  margin-top: 10px;
+  font: 26px "Cormorant Garamond", serif;
+}
+
+.map-link {
+  display: inline-block;
+  margin-top: 28px;
+  padding: 14px 22px;
+  border: 1px solid var(--gold);
+  color: white;
+  text-decoration: none;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.countdown {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.count-number {
+  font: 40px "Cormorant Garamond", serif;
+  color: var(--burgundy);
+}
+
+.count-label {
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+.rsvp { background: #f7f0e9; }
+
+.form {
+  max-width: 440px;
+  margin: 30px auto 0;
+  text-align: left;
+}
+
+.form label.field {
+  display: block;
+  margin: 20px 0 8px;
+  font-size: 11px;
+}
+
+.form input[type="text"] {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #d9c7bb;
+  background: white;
+}
+
+.option {
+  display: block;
+  padding: 15px;
+  margin-top: 10px;
+  border: 1px solid #d9c7bb;
+  background: white;
+}
+
+.submit {
+  width: 100%;
+  padding: 17px;
+  margin-top: 25px;
+  border: none;
+  background: var(--burgundy);
+  color: white;
+  letter-spacing: 2px;
+}
+
+.message {
+  text-align: center;
+  font-size: 13px;
+  margin-top: 15px;
+}
+
+.music-control {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 5;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  background: white;
+  color: var(--burgundy);
+}
+
+footer {
+  background: var(--dark);
+  color: white;
+  padding: 45px 20px;
+  text-align: center;
+}
+
+footer .script { color: white; font-size: 44px; }
+
+@media (min-width: 700px) {
+  .photos { grid-template-columns: 1fr 1fr; }
+  .photos img:nth-child(2) { width: 100%; }
+  .photos img:nth-child(3) {
+    grid-column: 1 / -1;
+    width: 75%;
+    margin: auto;
+  }
+}
+</style>
+</head>
+
+<body class="locked">
+
+<div id="cover">
+  <div class="cover-content">
+    <div class="cover-label">ВЫ ПРИГЛАШЕНЫ НА СВАДЬБУ</div>
+    <button class="envelope" id="openEnvelope"
+      aria-label="Открыть приглашение">
+      <span class="seal">А & А</span>
+    </button>
+    <div class="open-hint">НАЖМИТЕ, ЧТОБЫ ОТКРЫТЬ</div>
+  </div>
+</div>
+
+<audio id="music" src="assets/dunya.mp3" loop></audio>
+<button id="musicButton" class="music-control"
+  hidden aria-label="Музыка">♫</button>
+
+<main id="main">
+  <section class="hero">
+    <div class="eyebrow">Приглашение на свадьбу</div>
+    <div class="script">Арсен & Амина</div>
+    <div style="color:#b99a68">✦ ❦ ✦</div>
+    <h2>День нашей любви</h2>
+    <div class="hero-date">20 · 11 · 2026</div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Наша история</div>
+    <h2>Два сердца — одна история</h2>
+    <div class="photos">
+      <img src="assets/couple.jpeg" alt="Арсен и Амина">
+      <img src="assets/rings.jpeg" alt="Обручальное кольцо">
+      <img src="assets/details.jpeg" alt="Свадебные детали">
+    </div>
+  </section>
+
+  <section>
+    <div class="invitation">
+      Дорогие родные и близкие!<br><br>
+      С огромной радостью приглашаем вас
+      разделить с нами один из самых
+      счастливых и важных дней нашей жизни.<br><br>
+      Будем счастливы видеть вас среди
+      наших дорогих гостей!
+    </div>
+    <div class="script" style="font-size:48px;margin-top:25px">
+      Арсен & Амина
+    </div>
+  </section>
+
+  <section class="details">
+    <div class="eyebrow">Сохраните дату</div>
+    <h2>День нашей свадьбы</h2>
+    <div class="detail-date">20 ноября 2026</div>
+    <div class="detail-label">Время начала</div>
+    <div class="detail-value">17:00</div>
+    <div class="detail-label">Место проведения</div>
+    <div class="detail-value">Ак Бата Grand Hall</div>
+    <a class="map-link"
+      href="https://www.google.com/maps/search/?api=1&query=Ак+Бата+Grand+Hall+Бишкек"
+      target="_blank" rel="noopener noreferrer">Открыть карту</a>
+  </section>
+
+  <section>
+    <div class="eyebrow">С нетерпением ждём</div>
+    <h2>До нашей свадьбы осталось</h2>
+    <div class="countdown">
+      <div><div class="count-number" id="days">000</div>
+        <div class="count-label">Дней</div></div>
+      <div><div class="count-number" id="hours">00</div>
+        <div class="count-label">Часов</div></div>
+      <div><div class="count-number" id="minutes">00</div>
+        <div class="count-label">Минут</div></div>
+      <div><div class="count-number" id="seconds">00</div>
+        <div class="count-label">Секунд</div></div>
+    </div>
+  </section>
+
+  <section class="rsvp">
+    <div class="eyebrow">Пожалуйста, ответьте</div>
+    <h2>Будете ли вы с нами?</h2>
+    <p>Пожалуйста, подтвердите своё присутствие.</p>
+
+    <form class="form" id="rsvpForm">
+      <label class="field" for="guestName">ВАШЕ ИМЯ И ФАМИЛИЯ</label>
+      <input id="guestName" type="text" required
+        maxlength="120" placeholder="Имя и фамилия">
+
+      <label class="field">ВАШ ОТВЕТ</label>
+      <label class="option">
+        <input type="radio" name="attendance"
+          value="Келем" required>
+        ❤️ Да, с удовольствием приду
+      </label>
+      <label class="option">
+        <input type="radio" name="attendance"
+          value="Келе албайм" required>
+        🤍 К сожалению, не смогу
+      </label>
+
+      <button class="submit" type="submit">
+        Отправить ответ
+      </button>
+      <div class="message" id="message"></div>
+    </form>
+  </section>
+
+  <footer>
+    <div class="eyebrow">С любовью</div>
+    <div class="script">Арсен & Амина</div>
+    <p>20 · 11 · 2026</p>
+  </footer>
+</main>
+
+<script>
+const cover = document.getElementById('cover');
+const main = document.getElementById('main');
+const music = document.getElementById('music');
+const musicButton = document.getElementById('musicButton');
+let opened = false;
+
+document.getElementById('openEnvelope').addEventListener('click', async () => {
+  if (opened) return;
+  opened = true;
+  cover.classList.add('opening');
+
+  try {
+    await music.play();
+    musicButton.hidden = false;
+  } catch (error) {
+    musicButton.hidden = false;
+    console.warn('Музыка не запустилась', error);
+  }
+
+  setTimeout(() => {
+    cover.classList.add('dismissed');
+    main.classList.add('visible');
+    document.body.classList.remove('locked');
+  }, 1100);
+});
+
+musicButton.addEventListener('click', async () => {
+  if (music.paused) {
+    try { await music.play(); } catch (e) { console.warn(e); }
+  } else {
+    music.pause();
+  }
+});
+
+function updateCountdown() {
+  const target = new Date('2026-11-20T17:00:00+06:00').getTime();
+  const diff = target - Date.now();
+
+  const values = diff <= 0 ? [0, 0, 0, 0] : [
+    Math.floor(diff / 86400000),
+    Math.floor(diff % 86400000 / 3600000),
+    Math.floor(diff % 3600000 / 60000),
+    Math.floor(diff % 60000 / 1000)
+  ];
+
+  ['days', 'hours', 'minutes', 'seconds'].forEach((id, i) => {
+    document.getElementById(id).textContent =
+      String(values[i]).padStart(i === 0 ? 3 : 2, '0');
+  });
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+/*
+  RSVP Google Sheets байланышын кошкондо,
+  төмөнкү URL'ге Google Apps Script Web App URL жаз.
+*/
+const GOOGLE_SCRIPT_URL = 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
+document.getElementById('rsvpForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.currentTarget;
+  const name = document.getElementById('guestName').value.trim();
+  const attendance = form.querySelector(
+    'input[name="attendance"]:checked'
+  )?.value;
+  const message = document.getElementById('message');
+
+  if (!name || !attendance) return;
+
+  if (!GOOGLE_SCRIPT_URL.startsWith('https://script.google.com/')) {
+    message.textContent =
+      'Форма пока не подключена к Google Sheets.';
+    return;
+  }
+
+  const button = form.querySelector('button[type="submit"]');
+  button.disabled = true;
+
+  try {
+    const data = new URLSearchParams({ name, attendance });
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: data
+    });
+    message.textContent = 'Спасибо за ваш ответ!';
+    form.reset();
+  } catch (error) {
+    message.textContent =
+      'Не удалось отправить ответ. Попробуйте ещё раз.';
+  } finally {
+    button.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
